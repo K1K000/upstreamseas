@@ -1,0 +1,14 @@
+[package]
+name = "upstreamseas"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+sea-orm = { version = "2.0.0-rc.20", features = [
+  "sqlx-sqlite",
+  "runtime-tokio",
+  "entity-registry",
+  "schema-sync",
+] }
+rocket = { version = "0.5.1", features = ["json"] }
+serde = "1.0.228"
