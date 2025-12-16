@@ -3,6 +3,7 @@ mod error_handling;
 mod mounter;
 mod routes;
 use crate::mounter::RocketMount;
+use crate::routes::book::BookMounter;
 use crate::routes::student::StudentMounter;
 use sea_orm::Database;
 
@@ -16,7 +17,10 @@ async fn lauch() -> _ {
         .sync(&db)
         .await
         .unwrap();
-    rocket::build().manage(db).mount_route::<StudentMounter>()
+    rocket::build()
+        .manage(db)
+        .mount_route::<StudentMounter>()
+        .mount_route::<BookMounter>()
 }
 //
 // #[get("/")]

@@ -8,12 +8,12 @@ pub mod get;
 pub mod post;
 pub mod put;
 //
-pub struct StudentMounter;
+pub struct BookMounter;
 
-impl Mounter for StudentMounter {
+impl Mounter for BookMounter {
     fn mount(r: Rocket<Build>) -> Rocket<Build> {
         r.mount(
-            "/student",
+            "/book",
             routes![get::all, post::single, delete::by_id, put::put],
         )
     }

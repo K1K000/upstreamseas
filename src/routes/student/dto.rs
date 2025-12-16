@@ -14,7 +14,6 @@ pub struct StudentCreate {
     // pub id: i32,
     pub name: String,
     pub email: String,
-    pub book_ids: Vec<i32>,
 }
 
 pub fn student_to_dto(student: &student::Model) -> StudentResponse {
