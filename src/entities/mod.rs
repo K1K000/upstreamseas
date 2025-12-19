@@ -1,5 +1,8 @@
+pub mod author;
 pub mod book;
+pub mod book_author;
+pub mod book_category;
 pub mod borrow;
-pub mod student;
-
+pub mod category;
 pub mod prelude;
+pub mod student;

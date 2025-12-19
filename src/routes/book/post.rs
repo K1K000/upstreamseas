@@ -4,13 +4,16 @@ use sea_orm::DatabaseConnection;
 use crate::{
     entities::book,
     error_handling::ErrorResponder,
-    routes::{book::dto::BookResponse, student::dto::*},
+    routes::{
+        book::dto::*,
+        book::dto::{BookCreate, BookResponse},
+    },
 };
 
 #[post("/", format = "json", data = "<data>")]
 pub async fn single(
     db: &State<DatabaseConnection>,
-    data: Json<StudentCreate>,
+    data: Json<BookCreate>,
 ) -> Result<Created<Json<BookResponse>>, ErrorResponder> {
     let db = db.inner();
 
@@ -18,8 +21,7 @@ pub async fn single(
         .set_name(data.name.clone())
         .insert(db)
         .await?;
-
-    Ok(Created::new("/student").body(Json(BookResponse {
+    Ok(Created::new("/book").body(Json(BookResponse {
         id: book.id,
         name: book.name,
     })))

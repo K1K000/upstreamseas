@@ -9,11 +9,6 @@ pub async fn all(
 ) -> Result<Json<Vec<BorrowResponse>>, ErrorResponder> {
     let db = db.inner();
     Ok(Json(
-        Borrow::find()
-            .all(db)
-            .await?
-            .iter()
-            .map(borrow_to_dto)
-            .collect(),
+        Borrow::find().all(db).await?.iter().map(to_dto).collect(),
     ))
 }

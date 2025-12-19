@@ -2,29 +2,26 @@ use rocket::{State, http::Status, put, serde::json::Json};
 use sea_orm::{ActiveValue::Set, DatabaseConnection, EntityTrait};
 
 use crate::{
-    entities::{borrow, prelude::Borrow},
+    entities::{book_author, prelude::Book_Author},
     error_handling::ErrorResponder,
-    routes::borrow::dto::BorrowCreate,
+    routes::book_author::dto::*,
 };
 
-// TODO: make date and limit changeable for extension purpouses
 #[put("/<id>", data = "<new_item>", format = "json")]
 pub async fn put(
     id: i32,
-    new_item: Json<BorrowCreate>,
+    new_item: Json<BookAuthorCreate>,
     db: &State<DatabaseConnection>,
 ) -> Result<Status, ErrorResponder> {
     let db = db.inner();
-    match Borrow::find_by_id(id).one(db).await? {
-        Some(val) => {
-            let model = borrow::ActiveModel {
+    match Book_Author::find_by_id(id).one(db).await? {
+        Some(_val) => {
+            let model = book_author::ActiveModel {
                 id: sea_orm::ActiveValue::set(id),
                 book_id: Set(new_item.book_id),
-                student_id: Set(new_item.student_id),
-                date: Set(val.date),
-                limit: Set(val.limit),
+                author_id: Set(new_item.author_id),
             };
-            Borrow::update(model).exec(db).await?;
+            Book_Author::update(model).exec(db).await?;
             Ok(Status::NoContent)
         }
         None => Err(ErrorResponder::NotFound(())),
