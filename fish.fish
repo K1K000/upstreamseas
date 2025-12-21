@@ -2,7 +2,7 @@
 
 curl -X POST http://127.0.0.1:8000/student -H "Content-Type: application/json" -d '{"name": "peter", "email": "emal"}'                             
 echo ""
-curl -X POST http://127.0.0.1:8000/book -H "Content-Type: application/json" -d '{"name": "peters book"}'                             
+curl -X POST http://127.0.0.1:8000/book -H "Content-Type: application/json" -d '{"name": "peters book", "available": 1000 }'                             
 echo ""
 curl -X POST http://127.0.0.1:8000/borrow -H "Content-Type: application/json" -d '{"student_id": 1, "book_id": 1}'                             
 echo ""

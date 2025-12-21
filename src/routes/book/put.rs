@@ -19,6 +19,7 @@ pub async fn put(
             let model = book::ActiveModel {
                 id: sea_orm::ActiveValue::set(id),
                 name: Set(new_item.name.clone()),
+                available: Set(new_item.available),
             };
             Book::update(model).exec(db).await?;
             Ok(Status::NoContent)

@@ -7,6 +7,7 @@ pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i32,
     pub name: String,
+    pub available: u32,
     #[sea_orm(has_many, via = "borrow")]
     pub students: HasMany<super::student::Entity>,
     #[sea_orm(has_many, via = "book_author")]

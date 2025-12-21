@@ -1,14 +1,14 @@
 use chrono::{Days, Utc};
 use rocket::{State, post, response::status::Created, serde::json::Json};
-use sea_orm::DatabaseConnection;
+use sea_orm::{DatabaseConnection, EntityTrait};
 
 use crate::{
-    entities::borrow,
-    error_handling::ErrorResponder,
-    routes::{borrow::dto::BorrowResponse, borrow::dto::*},
+    entities::{book, borrow, prelude::*},
+    error_handling::{ErrorMessage, ErrorResponder},
+    routes::borrow::dto::{BorrowResponse, *},
 };
 
-const BORROWLIMITDAYS: u64 = 30;
+const BORROWLIMITDAYS: u64 = 100000;
 
 #[post("/", format = "json", data = "<data>")]
 pub async fn single(
@@ -16,6 +16,30 @@ pub async fn single(
     data: Json<BorrowCreate>,
 ) -> Result<Created<Json<BorrowResponse>>, ErrorResponder> {
     let db = db.inner();
+    let book = Book::find_by_id(data.book_id).one(db).await?;
+
+    match book {
+        None => {
+            return Err(ErrorResponder::BadRequest(Json(ErrorMessage {
+                message: String::from("The book doesn't exists"),
+            })));
+        }
+        Some(book) => {
+            if book.available == 0 {
+                return Err(ErrorResponder::BadRequest(Json(ErrorMessage {
+                    message: String::from("The book doesn't exists"),
+                })));
+            }
+
+            Book::update(
+                book::ActiveModel::builder()
+                    .set_id(book.id)
+                    .set_name(book.name)
+                    .set_available(book.available - 1),
+            );
+        }
+        _ => {}
+    }
 
     let borrow = borrow::ActiveModel::builder()
         .set_book_id(data.book_id)
@@ -31,7 +55,6 @@ pub async fn single(
         .insert(db)
         .await?;
 
-    // Ok(Created::new("/borrow").body(Json(borrow_to_dto(&borrow))))
     Ok(Created::new("/borrow").body(Json(BorrowResponse {
         id: borrow.id,
         book_id: borrow.book_id,

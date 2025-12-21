@@ -4,10 +4,7 @@ use sea_orm::DatabaseConnection;
 use crate::{
     entities::book,
     error_handling::ErrorResponder,
-    routes::{
-        book::dto::*,
-        book::dto::{BookCreate, BookResponse},
-    },
+    routes::book::dto::{BookCreate, BookResponse},
 };
 
 #[post("/", format = "json", data = "<data>")]
@@ -19,10 +16,12 @@ pub async fn single(
 
     let book = book::ActiveModel::builder()
         .set_name(data.name.clone())
+        .set_available(data.available)
         .insert(db)
         .await?;
     Ok(Created::new("/book").body(Json(BookResponse {
         id: book.id,
         name: book.name,
+        available: book.available,
     })))
 }
