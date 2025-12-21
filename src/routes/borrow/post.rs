@@ -1,6 +1,6 @@
 use chrono::{Days, Utc};
 use rocket::{State, post, response::status::Created, serde::json::Json};
-use sea_orm::{DatabaseConnection, EntityTrait};
+use sea_orm::{ActiveValue::Set, DatabaseConnection, EntityTrait};
 
 use crate::{
     entities::{book, borrow, prelude::*},
@@ -16,9 +16,8 @@ pub async fn single(
     data: Json<BorrowCreate>,
 ) -> Result<Created<Json<BorrowResponse>>, ErrorResponder> {
     let db = db.inner();
-    let book = Book::find_by_id(data.book_id).one(db).await?;
 
-    match book {
+    match Book::find_by_id(data.book_id).one(db).await? {
         None => {
             return Err(ErrorResponder::BadRequest(Json(ErrorMessage {
                 message: String::from("The book doesn't exists"),
@@ -31,14 +30,15 @@ pub async fn single(
                 })));
             }
 
-            Book::update(
-                book::ActiveModel::builder()
-                    .set_id(book.id)
-                    .set_name(book.name)
-                    .set_available(book.available - 1),
-            );
-        }
-        _ => {}
+            Book::update(book::ActiveModel {
+                id: Set(book.id),
+                name: Set(book.name.clone()),
+                // we decrease it by one because one book has been borrowed
+                available: Set(book.available - 1),
+            })
+            .exec(db)
+            .await?;
+        } // _ => {}
     }
 
     let borrow = borrow::ActiveModel::builder()

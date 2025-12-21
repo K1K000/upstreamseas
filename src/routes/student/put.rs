@@ -21,7 +21,7 @@ pub async fn put(
                 name: Set(new_item.name.clone()),
                 email: Set(new_item.email.clone()),
             };
-            student::Entity::update(model).exec(db).await?;
+            Student::update(model).exec(db).await?;
             Ok(Status::NoContent)
         }
         None => Err(ErrorResponder::NotFound(())),
