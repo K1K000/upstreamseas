@@ -2,6 +2,7 @@ use rocket::{Build, Rocket, routes};
 
 use crate::mounter::Mounter;
 
+pub mod business;
 pub mod delete;
 pub mod dto;
 pub mod get;

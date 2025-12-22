@@ -16,20 +16,14 @@ pub async fn single(
     let student = student::ActiveModel::builder()
         .set_name(data.name.clone())
         .set_email(data.email.clone())
+        .set_has_card(data.has_card)
         .insert(db)
         .await?;
-    // .add_book()
-    // let book = book::Entity::find_by_id(books[0]).one(db).await?;
-    // for book in data.book_ids.iter() {
-    //     let book = book::Entity::find_by_id(books[0]).one(db);
-    //     student.add_book(book).await;
-    // }
-
-    // let student = student.insert(db).await?;
 
     Ok(Created::new("/student").body(Json(StudentResponse {
         id: student.id,
         name: student.name,
         email: student.email,
+        has_card: student.has_card,
     })))
 }

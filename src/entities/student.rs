@@ -8,6 +8,7 @@ pub struct Model {
     pub id: i32,
     pub name: String,
     pub email: String,
+    pub has_card: bool,
     #[sea_orm(has_many, via = "borrow")]
     pub books: Vec<super::student::Entity>,
 }

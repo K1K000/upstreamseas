@@ -17,9 +17,10 @@ pub async fn put(
     match Student::find_by_id(id).one(db).await? {
         Some(_val) => {
             let model = student::ActiveModel {
-                id: sea_orm::ActiveValue::set(id),
+                id: Set(id),
                 name: Set(new_item.name.clone()),
                 email: Set(new_item.email.clone()),
+                has_card: Set(new_item.has_card),
             };
             Student::update(model).exec(db).await?;
             Ok(Status::NoContent)

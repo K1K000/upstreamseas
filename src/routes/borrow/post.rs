@@ -1,13 +1,15 @@
 use chrono::{Days, Utc};
 use rocket::{State, post, response::status::Created, serde::json::Json};
-use sea_orm::{ActiveValue::Set, DatabaseConnection, EntityTrait};
+use sea_orm::DatabaseConnection;
 
 use crate::{
-    entities::{book, borrow, prelude::*},
-    error_handling::{ErrorMessage, ErrorResponder},
+    entities::borrow,
+    error_handling::ErrorResponder,
+    routes::borrow::business::*,
     routes::borrow::dto::{BorrowResponse, *},
 };
 
+// make this a variable somehow if needed
 const BORROWLIMITDAYS: u64 = 100000;
 
 #[post("/", format = "json", data = "<data>")]
@@ -15,32 +17,10 @@ pub async fn single(
     db: &State<DatabaseConnection>,
     data: Json<BorrowCreate>,
 ) -> Result<Created<Json<BorrowResponse>>, ErrorResponder> {
+    book_verification(data.book_id, db).await?;
+    student_verification(data.student_id, db).await?;
+
     let db = db.inner();
-
-    match Book::find_by_id(data.book_id).one(db).await? {
-        None => {
-            return Err(ErrorResponder::BadRequest(Json(ErrorMessage {
-                message: String::from("The book doesn't exists"),
-            })));
-        }
-        Some(book) => {
-            if book.available == 0 {
-                return Err(ErrorResponder::BadRequest(Json(ErrorMessage {
-                    message: String::from("The book doesn't exists"),
-                })));
-            }
-
-            Book::update(book::ActiveModel {
-                id: Set(book.id),
-                name: Set(book.name.clone()),
-                // we decrease it by one because one book has been borrowed
-                available: Set(book.available - 1),
-            })
-            .exec(db)
-            .await?;
-        } // _ => {}
-    }
-
     let borrow = borrow::ActiveModel::builder()
         .set_book_id(data.book_id)
         .set_student_id(data.student_id)
