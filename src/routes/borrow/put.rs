@@ -26,7 +26,7 @@ pub async fn put(
                     .limit
                     .checked_add_days(Days::new(change.extension))
                     .unwrap_or(val.limit)),
-                active: Set(true),
+                active: Set(change.active),
             };
             Borrow::update(model).exec(db).await?;
             Ok(Status::NoContent)

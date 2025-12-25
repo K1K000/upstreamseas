@@ -14,9 +14,6 @@ pub struct BorrowResponse {
     pub active: bool
 }
 
-
-//TODO: DO SOMETHING HERE RN WE CANT CHANGE IF THIS IS ACTIVE OR NOT, also date and limit still not
-//change able so grind on
 #[derive(Deserialize)]
 pub struct BorrowCreate {
     pub book_id: i32,
@@ -31,7 +28,6 @@ pub struct BorrowChange {
     pub extension: u64,
     pub active: bool
 }
-
 
 pub fn to_dto(borrow: &borrow::Model) -> BorrowResponse {
     BorrowResponse {
