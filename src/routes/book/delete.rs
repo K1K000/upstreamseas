@@ -4,6 +4,7 @@ use rocket::http::Status;
 use rocket::*;
 use sea_orm::*;
 
+//TODO: make this work
 #[delete("/<id>")]
 pub async fn by_id(db: &State<DatabaseConnection>, id: i32) -> Result<Status, ErrorResponder> {
     let db = db.inner();

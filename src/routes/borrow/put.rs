@@ -1,17 +1,17 @@
+use chrono::Days;
 use rocket::{State, http::Status, put, serde::json::Json};
 use sea_orm::{ActiveValue::Set, DatabaseConnection, EntityTrait};
 
 use crate::{
     entities::{borrow, prelude::Borrow},
     error_handling::ErrorResponder,
-    routes::borrow::dto::BorrowCreate,
+    routes::borrow::dto::BorrowChange,
 };
 
-// TODO: make date and limit changeable for extension purpouses
-#[put("/<id>", data = "<new_item>", format = "json")]
+#[put("/<id>", data = "<change>", format = "json")]
 pub async fn put(
     id: i32,
-    new_item: Json<BorrowCreate>,
+    change: Json<BorrowChange>,
     db: &State<DatabaseConnection>,
 ) -> Result<Status, ErrorResponder> {
     let db = db.inner();
@@ -19,10 +19,14 @@ pub async fn put(
         Some(val) => {
             let model = borrow::ActiveModel {
                 id: sea_orm::ActiveValue::set(id),
-                book_id: Set(new_item.book_id),
-                student_id: Set(new_item.student_id),
+                book_id: Set(change.book_id),
+                student_id: Set(change.student_id),
                 date: Set(val.date),
-                limit: Set(val.limit),
+                limit: Set(val
+                    .limit
+                    .checked_add_days(Days::new(change.extension))
+                    .unwrap_or(val.limit)),
+                active: Set(true),
             };
             Borrow::update(model).exec(db).await?;
             Ok(Status::NoContent)

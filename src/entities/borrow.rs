@@ -9,6 +9,7 @@ pub struct Model {
     pub id: i32,
     pub date: NaiveDate,
     pub limit: NaiveDate,
+    pub active: bool,
     pub book_id: i32,
     #[sea_orm(belongs_to, from = "book_id", to = "id")]
     pub book: HasOne<super::book::Entity>,

@@ -6,6 +6,11 @@ use crate::{
     error_handling::{ErrorMessage, ErrorResponder},
 };
 
+pub enum Flow {
+    FBorrow,
+    FGiveBack,
+}
+
 pub async fn student_verification(
     student_id: i32,
     db: &State<DatabaseConnection>,
@@ -28,9 +33,11 @@ pub async fn student_verification(
     Ok(())
 }
 
-pub async fn book_verification(
+pub async fn book_handling(
+    // book_model: Option<book::Model>,
     book_id: i32,
     db: &State<DatabaseConnection>,
+    flow: Flow,
 ) -> Result<(), ErrorResponder> {
     let db = db.inner();
     match Book::find_by_id(book_id).one(db).await? {
@@ -49,8 +56,11 @@ pub async fn book_verification(
             Book::update(book::ActiveModel {
                 id: Set(book.id),
                 name: Set(book.name.clone()),
-                // we decrease it by one because one book has been borrowed
-                available: Set(book.available - 1),
+                //not very elegant :(
+                available: Set(match flow {
+                    Flow::FBorrow => book.available - 1, //borrowing decreases books by 1
+                    Flow::FGiveBack => book.available + 1, // giving back to the community
+                }),
             })
             .exec(db)
             .await?;
