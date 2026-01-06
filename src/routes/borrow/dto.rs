@@ -1,5 +1,4 @@
 use chrono::NaiveDate;
-use sea_orm::prelude::DateTime;
 use serde::{Deserialize, Serialize};
 
 use crate::entities::borrow;

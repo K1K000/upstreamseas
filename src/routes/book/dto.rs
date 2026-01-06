@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::entities::book;
 
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 pub struct BookResponse {
     pub id: i32,
     pub name: String,

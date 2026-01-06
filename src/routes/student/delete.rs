@@ -1,5 +1,4 @@
 use crate::entities::prelude::Student;
-use crate::entities::student;
 use crate::error_handling::*;
 use rocket::http::Status;
 use rocket::*;

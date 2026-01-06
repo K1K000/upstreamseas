@@ -4,12 +4,17 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-sea-orm = { version = "2.0.0-rc.20", features = [
+sea-orm = { version = "2.0.0-rc.27", features = [
   "sqlx-sqlite",
   "runtime-tokio",
   "entity-registry",
   "schema-sync",
 ] }
+
 rocket = { version = "0.5.1", features = ["json"] }
 serde = "1.0.228"
 chrono = "0.4.42"
+
+# because sea-orm doesn't have their deps right
+sea-query-sqlx = "0.8.0-rc.11"
+sqlx = "0.8.6"

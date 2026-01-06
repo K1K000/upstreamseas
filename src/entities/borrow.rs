@@ -12,7 +12,7 @@ pub struct Model {
     pub active: bool,
     pub book_id: i32,
     #[sea_orm(belongs_to, from = "book_id", to = "id")]
-    pub book: HasOne<super::book::Entity>,
+    pub books: HasOne<super::book::Entity>,
     pub student_id: i32,
     #[sea_orm(belongs_to, from = "student_id", to = "id")]
     pub student: HasOne<super::student::Entity>,

@@ -8,6 +8,8 @@ pub struct Model {
     pub id: i32,
     pub name: String,
     pub available: u32,
+    #[sea_orm(has_many)]
+    pub borrows: HasMany<super::borrow::Entity>,
     #[sea_orm(has_many, via = "borrow")]
     pub students: HasMany<super::student::Entity>,
     #[sea_orm(has_many, via = "book_author")]
@@ -17,8 +19,5 @@ pub struct Model {
     // #[sea_orm(belongs_to, from = "student_id", to = "id")]
     // pub student: HasOne<super::student::Entity>,
 }
-
-// #[sea_orm(has_many, via = "cake_filling")]
-// pub fillings: Vec<super::filling::Entity>,
 
 impl ActiveModelBehavior for ActiveModel {}

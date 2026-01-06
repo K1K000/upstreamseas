@@ -12,3 +12,6 @@ pub async fn all(
         Author::find().all(db).await?.iter().map(to_dto).collect(),
     ))
 }
+
+// #[get("/")]
+// pub async fn author() ->
