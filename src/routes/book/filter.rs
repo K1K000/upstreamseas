@@ -1,10 +1,8 @@
-use crate::entities::book::Model;
 use crate::entities::{book, borrow, prelude::*};
 use crate::error_handling::ErrorResponder;
 use crate::routes::book::dto::*;
 use rocket::{State, get, serde::json::Json};
-use sea_orm::{DatabaseConnection, EntityTrait, LoaderTrait, Order, QueryOrder, QuerySelect};
-use sqlx::query;
+use sea_orm::{DatabaseConnection, EntityTrait, Order, QueryOrder, QuerySelect};
 
 #[get("/top/<n>")]
 pub async fn top(
@@ -13,30 +11,17 @@ pub async fn top(
 ) -> Result<Json<Vec<BookResponse>>, ErrorResponder> {
     let db = db.inner();
 
-    let books = Book::find().all(db).await?;
-    let mut borrows = books.load_many(Borrow, db).await?;
-
-    borrows.sort_by_key(|a| a.len());
-    borrows.reverse();
-    let mut sorted_books: Vec<BookResponse> = vec![];
-
-    for borrow in borrows.iter().filter(|val| val.iter().len() > 0) {
-        // RUNTIME ERROR !!!
-        sorted_books.push(book_to_dto(
-            &books
-                .iter()
-                .filter(|a| a.id == borrow[0].book_id)
-                .collect::<Vec<_>>()[0]
-                .clone(),
-        ));
-    }
-    dbg!(&sorted_books);
-    dbg!(&borrows);
-
-    todo!();
+    let boobs = Book::find()
+        .left_join(Borrow)
+        .group_by(borrow::Column::BookId)
+        .order_by(borrow::Column::BookId, Order::Desc)
+        .limit(n)
+        .all(db)
+        .await?;
+    Ok(Json(boobs.iter().map(book_to_dto).collect::<Vec<_>>()))
 }
 
-#[get("/<order>?<n>&<key>")]
+#[get("/<order>?<key>&<n>")]
 pub async fn filter(
     db: &State<DatabaseConnection>,
     order: Option<&str>,
