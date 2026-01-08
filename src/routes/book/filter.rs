@@ -11,14 +11,18 @@ pub async fn top(
 ) -> Result<Json<Vec<BookResponse>>, ErrorResponder> {
     let db = db.inner();
 
-    let boobs = Book::find()
-        .left_join(Borrow)
-        .group_by(borrow::Column::BookId)
-        .order_by(borrow::Column::BookId, Order::Desc)
-        .limit(n)
-        .all(db)
-        .await?;
-    Ok(Json(boobs.iter().map(book_to_dto).collect::<Vec<_>>()))
+    Ok(Json(
+        Book::find()
+            .left_join(Borrow)
+            .group_by(borrow::Column::BookId)
+            .order_by(borrow::Column::BookId, Order::Desc)
+            .limit(n)
+            .all(db)
+            .await?
+            .iter()
+            .map(book_to_dto)
+            .collect::<Vec<_>>(),
+    ))
 }
 
 #[get("/<order>?<key>&<n>")]

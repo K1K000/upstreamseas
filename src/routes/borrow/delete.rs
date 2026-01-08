@@ -19,7 +19,7 @@ pub async fn by_id(db: &State<DatabaseConnection>, id: i32) -> Result<Status, Er
             })));
         }
     };
-    book_handling(book_model.id, db, Flow::FGiveBack).await?;
+    book_handling(book_model.id, db, Flow::GiveBack).await?;
     let db = db.inner();
 
     match Borrow::find_by_id(id).one(db).await? {

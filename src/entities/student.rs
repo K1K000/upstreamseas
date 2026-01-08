@@ -11,6 +11,8 @@ pub struct Model {
     pub has_card: bool,
     #[sea_orm(has_many, via = "borrow")]
     pub books: Vec<super::student::Entity>,
+    #[sea_orm(has_one)]
+    pub ticket: HasOne<super::ticket::Entity>,
 }
 
 impl ActiveModelBehavior for ActiveModel {}

@@ -8,6 +8,7 @@ use crate::routes::book::BookMounter;
 use crate::routes::book_author::BookAuthorMounter;
 use crate::routes::borrow::BorrowMounter;
 use crate::routes::student::StudentMounter;
+use crate::routes::ticket::TicketMounter;
 use sea_orm::Database;
 
 #[rocket::launch]
@@ -26,6 +27,7 @@ async fn lauch() -> _ {
         .mount_route::<BorrowMounter>()
         .mount_route::<AuthorMounter>()
         .mount_route::<BookAuthorMounter>()
+        .mount_route::<TicketMounter>()
 }
 //
 // #[get("/")]

@@ -6,3 +6,4 @@ pub mod borrow;
 pub mod category;
 pub mod prelude;
 pub mod student;
+pub mod ticket;

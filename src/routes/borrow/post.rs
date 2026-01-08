@@ -16,7 +16,7 @@ pub async fn single(
     db: &State<DatabaseConnection>,
     data: Json<BorrowCreate>,
 ) -> Result<Created<Json<BorrowResponse>>, ErrorResponder> {
-    book_handling(data.book_id, db, Flow::FBorrow).await?;
+    book_handling(data.book_id, db, Flow::Borrow).await?;
 
     student_verification(data.student_id, db).await?;
 

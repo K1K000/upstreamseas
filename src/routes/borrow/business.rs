@@ -7,8 +7,8 @@ use crate::{
 };
 
 pub enum Flow {
-    FBorrow,
-    FGiveBack,
+    Borrow,
+    GiveBack,
 }
 
 pub async fn student_verification(
@@ -16,14 +16,14 @@ pub async fn student_verification(
     db: &State<DatabaseConnection>,
 ) -> Result<(), ErrorResponder> {
     let db = db.inner();
-    match Student::find_by_id(student_id).one(db).await? {
+    match Ticket::find_by_id(student_id).one(db).await? {
         None => {
             return Err(ErrorResponder::BadRequest(Json(ErrorMessage {
                 message: String::from("The student doesn't exists"),
             })));
         }
-        Some(student) => {
-            if !student.has_card {
+        Some(ticket) => {
+            if ticket.end_date < chrono::Utc::now().date_naive() {
                 return Err(ErrorResponder::BadRequest(Json(ErrorMessage {
                     message: String::from("No valid readers card"),
                 })));
@@ -34,7 +34,6 @@ pub async fn student_verification(
 }
 
 pub async fn book_handling(
-    // book_model: Option<book::Model>,
     book_id: i32,
     db: &State<DatabaseConnection>,
     flow: Flow,
@@ -56,10 +55,9 @@ pub async fn book_handling(
             Book::update(book::ActiveModel {
                 id: Set(book.id),
                 name: Set(book.name.clone()),
-                //not very elegant :(
                 available: Set(match flow {
-                    Flow::FBorrow => book.available - 1, //borrowing decreases books by 1
-                    Flow::FGiveBack => book.available + 1, // giving back to the community
+                    Flow::Borrow => book.available - 1, //borrowing decreases books by 1
+                    Flow::GiveBack => book.available + 1, // giving back to the community
                 }),
             })
             .exec(db)
