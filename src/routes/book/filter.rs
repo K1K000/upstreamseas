@@ -2,7 +2,7 @@ use crate::entities::{book, borrow, prelude::*};
 use crate::error_handling::ErrorResponder;
 use crate::routes::book::dto::*;
 use rocket::{State, get, serde::json::Json};
-use sea_orm::{DatabaseConnection, EntityTrait, Order, QueryOrder, QuerySelect};
+use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, Order, QueryOrder, QuerySelect};
 
 #[get("/top/<n>")]
 pub async fn top(
@@ -15,7 +15,7 @@ pub async fn top(
         Book::find()
             .left_join(Borrow)
             .group_by(borrow::Column::BookId)
-            .order_by(borrow::Column::BookId, Order::Desc)
+            .order_by(borrow::Column::BookId.count(), Order::Desc)
             .limit(n)
             .all(db)
             .await?

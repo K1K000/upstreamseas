@@ -20,7 +20,6 @@ pub async fn put(
                 id: Set(id),
                 name: Set(new_item.name.clone()),
                 email: Set(new_item.email.clone()),
-                has_card: Set(new_item.has_card),
             };
             Student::update(model).exec(db).await?;
             Ok(Status::NoContent)

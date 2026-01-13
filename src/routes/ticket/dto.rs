@@ -21,9 +21,16 @@ pub fn ticket_to_dto(ticket: &ticket::Model) -> TicketResponse {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct TicketCreate {
+pub struct TicketUpdate {
+    pub id: i32,
     pub student_id: i32,
     pub creation_date: NaiveDate,
+    pub end_date: NaiveDate,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct TicketCreate {
+    pub student_id: i32,
     pub end_date: NaiveDate,
 }
 #[derive(Debug, Serialize, Deserialize)]

@@ -1,0 +1,5 @@
+what to do list
+  book_category endpoint
+  more filters ig 
+  check all delete validations they are bad
+  openapi

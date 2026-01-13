@@ -16,7 +16,6 @@ pub async fn single(
     let student = student::ActiveModel::builder()
         .set_name(data.name.clone())
         .set_email(data.email.clone())
-        .set_has_card(data.has_card)
         .insert(db)
         .await?;
 
@@ -24,6 +23,5 @@ pub async fn single(
         id: student.id,
         name: student.name,
         email: student.email,
-        has_card: student.has_card,
     })))
 }

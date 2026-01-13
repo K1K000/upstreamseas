@@ -6,6 +6,7 @@ use crate::mounter::RocketMount;
 use crate::routes::author::AuthorMounter;
 use crate::routes::book::BookMounter;
 use crate::routes::book_author::BookAuthorMounter;
+use crate::routes::book_category::BookCategoryMounter;
 use crate::routes::borrow::BorrowMounter;
 use crate::routes::student::StudentMounter;
 use crate::routes::ticket::TicketMounter;
@@ -28,6 +29,7 @@ async fn lauch() -> _ {
         .mount_route::<AuthorMounter>()
         .mount_route::<BookAuthorMounter>()
         .mount_route::<TicketMounter>()
+        .mount_route::<BookCategoryMounter>()
 }
 //
 // #[get("/")]

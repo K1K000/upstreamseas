@@ -1,4 +1,5 @@
 use crate::entities::prelude::Ticket;
+use crate::routes::ticket::dto::TicketUpdate;
 use crate::{entities::ticket, error_handling::ErrorResponder, routes::ticket::dto::TicketCreate};
 use rocket::{State, http::Status, put, serde::json::Json};
 use sea_orm::{ActiveValue::Set, DatabaseConnection, EntityTrait};
@@ -6,7 +7,7 @@ use sea_orm::{ActiveValue::Set, DatabaseConnection, EntityTrait};
 #[put("/<id>", data = "<data>", format = "json")]
 pub async fn put(
     id: i32,
-    data: Json<TicketCreate>,
+    data: Json<TicketUpdate>,
     db: &State<DatabaseConnection>,
 ) -> Result<Status, ErrorResponder> {
     let db = db.inner();
