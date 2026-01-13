@@ -8,6 +8,7 @@ use crate::routes::book::BookMounter;
 use crate::routes::book_author::BookAuthorMounter;
 use crate::routes::book_category::BookCategoryMounter;
 use crate::routes::borrow::BorrowMounter;
+use crate::routes::category::CategoryMounter;
 use crate::routes::student::StudentMounter;
 use crate::routes::ticket::TicketMounter;
 use sea_orm::Database;
@@ -30,6 +31,7 @@ async fn lauch() -> _ {
         .mount_route::<BookAuthorMounter>()
         .mount_route::<TicketMounter>()
         .mount_route::<BookCategoryMounter>()
+        .mount_route::<CategoryMounter>()
 }
 //
 // #[get("/")]

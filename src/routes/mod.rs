@@ -3,5 +3,6 @@ pub mod book;
 pub mod book_author;
 pub mod book_category;
 pub mod borrow;
+pub mod category;
 pub mod student;
 pub mod ticket;
