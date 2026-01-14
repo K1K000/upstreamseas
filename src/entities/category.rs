@@ -9,6 +9,8 @@ pub struct Model {
     pub name: String,
     #[sea_orm(has_many, via = "book_category")]
     pub books: Vec<super::book::Entity>,
+    #[sea_orm(has_many)]
+    pub book_categories: HasMany<super::book_category::Entity>,
 }
 
 impl ActiveModelBehavior for ActiveModel {}

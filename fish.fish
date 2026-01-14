@@ -30,7 +30,7 @@ nl curl -X POST http://127.0.0.1:8000/borrow -H "Content-Type: application/json"
 nl curl -X POST http://127.0.0.1:8000/borrow -H "Content-Type: application/json" -d '{"student_id": 4, "book_id": 2, "borrow_lenght": 10}'
 nl curl -X POST http://127.0.0.1:8000/borrow -H "Content-Type: application/json" -d '{"student_id": 1, "book_id": 2, "borrow_lenght": 10}'
 
-nl curl http://127.0.0.1:8000/book/top/3
+
 #
 #
 #

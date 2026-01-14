@@ -14,6 +14,7 @@ nl curl -X POST http://127.0.0.1:8000/book -H "Content-Type: application/json" -
 nl curl -X POST http://127.0.0.1:8000/book -H "Content-Type: application/json" -d '{"name": "eternal love", "available": 1000 }'
 
 nl curl -X POST http://127.0.0.1:8000/book_category -H "Content-Type: application/json" -d '{"book_id": 1, "category_id": 1}'
+nl curl -X POST http://127.0.0.1:8000/book_category -H "Content-Type: application/json" -d '{"book_id": 1, "category_id": 3}'
 nl curl -X POST http://127.0.0.1:8000/book_category -H "Content-Type: application/json" -d '{"book_id": 2, "category_id": 3}'
 nl curl -X POST http://127.0.0.1:8000/book_category -H "Content-Type: application/json" -d '{"book_id": 2, "category_id": 4}'
 nl curl -X POST http://127.0.0.1:8000/book_category -H "Content-Type: application/json" -d '{"book_id": 3, "category_id": 2}'
@@ -21,4 +22,5 @@ nl curl -X POST http://127.0.0.1:8000/book_category -H "Content-Type: applicatio
 
 
 
-http://127.0.0.1:8000/book_category
+echo "book 1 categories"
+curl http://127.0.0.1:8000/book/categories/1

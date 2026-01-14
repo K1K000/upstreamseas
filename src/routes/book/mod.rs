@@ -21,7 +21,10 @@ impl Mounter for BookMounter {
                 delete::by_id,
                 put::put,
                 filter::filter,
-                filter::top
+                filter::top,
+                get::limit,
+                get::id,
+                get::book_categories
             ],
         )
     }

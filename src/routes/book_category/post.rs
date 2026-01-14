@@ -16,7 +16,7 @@ pub async fn single(
 
     let book_category = book_category::ActiveModel::builder()
         .set_book_id(data.book_id)
-        .set_category_id(data.book_id)
+        .set_category_id(data.category_id)
         .insert(db)
         .await?;
 
