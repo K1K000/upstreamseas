@@ -1,5 +1,7 @@
 what to do list
-  book_category endpoint
-  more filters ig 
+  put del flag
+  book authors list
+  book_category endpoint -- donen't
+  more filters ig -> find out what this means
   check all delete validations they are bad
   openapi

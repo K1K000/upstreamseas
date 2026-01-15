@@ -12,6 +12,8 @@ pub struct Model {
     pub borrows: HasMany<super::borrow::Entity>,
     #[sea_orm(has_many)]
     pub book_categories: HasMany<super::book_category::Entity>,
+    #[sea_orm(has_many)]
+    pub book_author: HasMany<super::book_author::Entity>,
     #[sea_orm(has_many, via = "borrow")]
     pub students: HasMany<super::student::Entity>,
     #[sea_orm(has_many, via = "book_author")]

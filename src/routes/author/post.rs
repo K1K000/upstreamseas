@@ -14,7 +14,9 @@ pub async fn single(
     let author = author::ActiveModel::builder()
         .set_name(&data.name)
         .set_birthplace(&data.birthplace)
-        .set_birthdate(Utc::now().date_naive())
+        .set_birthdate(data.birthdate)
+        .set_description(&data.description)
+        .set_deleted(false)
         .insert(db)
         .await?;
 
@@ -23,5 +25,7 @@ pub async fn single(
         name: author.name,
         birthplace: author.birthplace,
         birthdate: author.birthdate,
+        description: author.description,
+        deleted: author.deleted,
     })))
 }

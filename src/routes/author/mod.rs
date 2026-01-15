@@ -14,7 +14,15 @@ impl Mounter for AuthorMounter {
     fn mount(r: Rocket<Build>) -> Rocket<Build> {
         r.mount(
             "/author",
-            routes![get::all, post::single, delete::by_id, put::put],
+            routes![
+                get::all,
+                get::limit,
+                get::authors_books,
+                get::id,
+                post::single,
+                delete::by_id,
+                put::put
+            ],
         )
     }
 }

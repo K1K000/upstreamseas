@@ -10,6 +10,8 @@ pub struct Model {
     pub name: String,
     pub birthplace: String,
     pub birthdate: NaiveDate,
+    pub description: String,
+    pub deleted: bool,
     #[sea_orm(has_many, via = "book_author")]
     pub books: Vec<super::book::Entity>,
 }
