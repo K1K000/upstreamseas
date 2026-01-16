@@ -16,12 +16,20 @@ pub async fn single(
 
     let book = book::ActiveModel::builder()
         .set_name(data.name.clone())
-        .set_available(data.available)
+        .set_all_available(data.all_available)
+        .set_available(data.all_available)
+        .set_description(data.description.clone())
+        .set_release(data.release)
+        .set_deleted(false)
         .insert(db)
         .await?;
     Ok(Created::new("/book").body(Json(BookResponse {
         id: book.id,
         name: book.name,
+        description: book.description,
+        all_available: book.all_available,
+        release: book.release,
         available: book.available,
+        deleted: book.deleted,
     })))
 }

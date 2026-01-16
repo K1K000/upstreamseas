@@ -15,7 +15,7 @@ impl Mounter for AuthorMounter {
         r.mount(
             "/author",
             routes![
-                get::all,
+                // get::all,
                 get::limit,
                 get::authors_books,
                 get::id,

@@ -56,7 +56,7 @@ pub async fn limit(
     ))
 }
 
-#[get("/categories/<id>")]
+#[get("/id/<id>/categories")]
 pub async fn book_categories(
     db: &State<DatabaseConnection>,
     id: i32,

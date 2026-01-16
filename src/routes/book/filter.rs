@@ -25,14 +25,17 @@ pub async fn top(
     ))
 }
 
+const DEFAULT_LIMIT: u64 = 20;
+
 #[get("/<order>?<key>&<n>")]
 pub async fn filter(
     db: &State<DatabaseConnection>,
     order: Option<&str>,
-    n: u64,
+    n: Option<u64>,
     key: Option<&str>,
 ) -> Result<Json<Vec<BookResponse>>, ErrorResponder> {
     let db = db.inner();
+    n.unwrap_or(DEFAULT_LIMIT);
 
     let ord = match order {
         Some("desc") => Order::Desc,

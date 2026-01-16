@@ -55,10 +55,14 @@ pub async fn book_handling(
             Book::update(book::ActiveModel {
                 id: Set(book.id),
                 name: Set(book.name.clone()),
+                description: Set(book.description.clone()),
                 available: Set(match flow {
                     Flow::Borrow => book.available - 1, //borrowing decreases books by 1
                     Flow::GiveBack => book.available + 1, // giving back to the community
                 }),
+                all_available: Set(book.all_available),
+                release: Set(book.release),
+                deleted: Set(book.deleted),
             })
             .exec(db)
             .await?;

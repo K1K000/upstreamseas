@@ -4,13 +4,13 @@ use sea_orm::{ActiveValue::Set, DatabaseConnection, EntityTrait};
 use crate::{
     entities::{book, prelude::Book},
     error_handling::ErrorResponder,
-    routes::book::dto::BookCreate,
+    routes::book::dto::BookUpdate,
 };
 
-#[put("/<id>", data = "<new_item>", format = "json")]
+#[put("/<id>", data = "<data>", format = "json")]
 pub async fn put(
     id: i32,
-    new_item: Json<BookCreate>,
+    data: Json<BookUpdate>,
     db: &State<DatabaseConnection>,
 ) -> Result<Status, ErrorResponder> {
     let db = db.inner();
@@ -18,8 +18,12 @@ pub async fn put(
         Some(_val) => {
             let model = book::ActiveModel {
                 id: sea_orm::ActiveValue::set(id),
-                name: Set(new_item.name.clone()),
-                available: Set(new_item.available),
+                name: Set(data.name.clone()),
+                description: Set(data.description.clone()),
+                available: Set(data.available),
+                all_available: Set(data.all_available),
+                release: Set(data.release),
+                deleted: Set(data.deleted),
             };
             Book::update(model).exec(db).await?;
             Ok(Status::NoContent)

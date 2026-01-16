@@ -7,15 +7,15 @@ use crate::{entities::prelude::*, error_handling::ErrorResponder};
 use rocket::{State, get, serde::json::Json};
 use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter, QuerySelect};
 
-#[get("/")]
-pub async fn all(
-    db: &State<DatabaseConnection>,
-) -> Result<Json<Vec<AuthorResponse>>, ErrorResponder> {
-    let db = db.inner();
-    Ok(Json(
-        Author::find().all(db).await?.iter().map(to_dto).collect(),
-    ))
-}
+// #[get("/")]
+// pub async fn all(
+//     db: &State<DatabaseConnection>,
+// ) -> Result<Json<Vec<AuthorResponse>>, ErrorResponder> {
+//     let db = db.inner();
+//     Ok(Json(
+//         Author::find().all(db).await?.iter().map(to_dto).collect(),
+//     ))
+// }
 
 #[get("/id/<id>")]
 pub async fn id(
@@ -34,21 +34,30 @@ pub async fn id(
 #[get("/<n>")]
 pub async fn limit(
     db: &State<DatabaseConnection>,
-    n: u64,
+    n: Option<u64>,
 ) -> Result<Json<Vec<AuthorResponse>>, ErrorResponder> {
     let db = db.inner();
-    Ok(Json(
-        Author::find()
-            .limit(n)
-            .all(db)
-            .await?
-            .iter()
-            .map(to_dto)
-            .collect(),
-    ))
+    match n {
+        Some(val) => {
+            return Ok(Json(
+                Author::find()
+                    .limit(val)
+                    .all(db)
+                    .await?
+                    .iter()
+                    .map(to_dto)
+                    .collect(),
+            ));
+        }
+        None => {
+            return Ok(Json(
+                Author::find().all(db).await?.iter().map(to_dto).collect(),
+            ));
+        }
+    }
 }
 
-#[get("/<id>/books")]
+#[get("/id/<id>/books")]
 pub async fn authors_books(
     db: &State<DatabaseConnection>,
     id: u64,

@@ -1,3 +1,4 @@
+use chrono::NaiveDate;
 use sea_orm::entity::prelude::*;
 
 #[sea_orm::model]
@@ -7,7 +8,11 @@ pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i32,
     pub name: String,
+    pub all_available: u32,
     pub available: u32,
+    pub description: String,
+    pub release: NaiveDate,
+    pub deleted: bool,
     #[sea_orm(has_many)]
     pub borrows: HasMany<super::borrow::Entity>,
     #[sea_orm(has_many)]
