@@ -20,6 +20,7 @@ pub async fn single(
         .set_available(data.all_available)
         .set_description(data.description.clone())
         .set_release(data.release)
+        .set_max_borrow(data.max_borrow)
         .set_deleted(false)
         .insert(db)
         .await?;
@@ -30,6 +31,7 @@ pub async fn single(
         all_available: book.all_available,
         release: book.release,
         available: book.available,
+        max_borrow: book.max_borrow,
         deleted: book.deleted,
     })))
 }

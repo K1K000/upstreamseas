@@ -37,9 +37,9 @@ pub async fn book_handling(
     book_id: i32,
     db: &State<DatabaseConnection>,
     flow: Flow,
-) -> Result<(), ErrorResponder> {
+) -> Result<book::Model, ErrorResponder> {
     let db = db.inner();
-    match Book::find_by_id(book_id).one(db).await? {
+    let book = match Book::find_by_id(book_id).one(db).await? {
         None => {
             return Err(ErrorResponder::BadRequest(Json(ErrorMessage {
                 message: String::from("The book doesn't exists"),
@@ -62,11 +62,13 @@ pub async fn book_handling(
                 }),
                 all_available: Set(book.all_available),
                 release: Set(book.release),
+                max_borrow: Set(book.max_borrow),
                 deleted: Set(book.deleted),
             })
             .exec(db)
             .await?;
+            book
         } // _ => {}
-    }
-    Ok(())
+    };
+    Ok(book)
 }

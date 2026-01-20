@@ -12,6 +12,7 @@ pub struct Model {
     pub available: u32,
     pub description: String,
     pub release: NaiveDate,
+    pub max_borrow: u32,
     pub deleted: bool,
     #[sea_orm(has_many)]
     pub borrows: HasMany<super::borrow::Entity>,

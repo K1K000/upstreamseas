@@ -19,16 +19,16 @@ nl curl -X POST http://127.0.0.1:8000/ticket -H "Content-Type: application/json"
 nl curl -X POST http://127.0.0.1:8000/ticket -H "Content-Type: application/json" -d '{"student_id": 3,  "end_date": "2026-01-18"}'                             
 nl curl -X POST http://127.0.0.1:8000/ticket -H "Content-Type: application/json" -d '{"student_id": 4,  "end_date": "2026-01-18"}'                             
 
-nl curl -X POST http://127.0.0.1:8000/book -H "Content-Type: application/json" -d '{"name": "peters book", "available": 1000 }'
-nl curl -X POST http://127.0.0.1:8000/book -H "Content-Type: application/json" -d '{"name": "peters book", "available": 1000 }'
-nl curl -X POST http://127.0.0.1:8000/book -H "Content-Type: application/json" -d '{"name": "peters book", "available": 1000 }'
+nl curl -X POST http://127.0.0.1:8000/book -H "Content-Type: application/json" -d '{"name": "the king in yellow","max_borrow": 100, "all_available": 1000, "description":"good", "release": "2026-01-15"}'
+nl curl -X POST http://127.0.0.1:8000/book -H "Content-Type: application/json" -d '{"name": "i married a woman", "max_borrow": 100,"all_available": 1000, "description":"good", "release": "2026-01-15"}'
+nl curl -X POST http://127.0.0.1:8000/book -H "Content-Type: application/json" -d '{"name": "eternal love","max_borrow": 100, "all_available": 1000, "description":"good", "release": "2026-01-15"}'
 
-nl curl -X POST http://127.0.0.1:8000/borrow -H "Content-Type: application/json" -d '{"student_id": 4, "book_id": 1, "borrow_lenght": 10}'
-nl curl -X POST http://127.0.0.1:8000/borrow -H "Content-Type: application/json" -d '{"student_id": 2, "book_id": 1, "borrow_lenght": 10}'
-nl curl -X POST http://127.0.0.1:8000/borrow -H "Content-Type: application/json" -d '{"student_id": 2, "book_id": 3, "borrow_lenght": 10}'
-nl curl -X POST http://127.0.0.1:8000/borrow -H "Content-Type: application/json" -d '{"student_id": 3, "book_id": 2, "borrow_lenght": 10}'
-nl curl -X POST http://127.0.0.1:8000/borrow -H "Content-Type: application/json" -d '{"student_id": 4, "book_id": 2, "borrow_lenght": 10}'
-nl curl -X POST http://127.0.0.1:8000/borrow -H "Content-Type: application/json" -d '{"student_id": 1, "book_id": 2, "borrow_lenght": 10}'
+nl curl -X POST http://127.0.0.1:8000/borrow -H "Content-Type: application/json" -d '{"student_id": 4, "book_id": 1 }'
+nl curl -X POST http://127.0.0.1:8000/borrow -H "Content-Type: application/json" -d '{"student_id": 2, "book_id": 1 }'
+nl curl -X POST http://127.0.0.1:8000/borrow -H "Content-Type: application/json" -d '{"student_id": 2, "book_id": 3 }'
+nl curl -X POST http://127.0.0.1:8000/borrow -H "Content-Type: application/json" -d '{"student_id": 3, "book_id": 2 }'
+nl curl -X POST http://127.0.0.1:8000/borrow -H "Content-Type: application/json" -d '{"student_id": 4, "book_id": 2 }'
+nl curl -X POST http://127.0.0.1:8000/borrow -H "Content-Type: application/json" -d '{"student_id": 1, "book_id": 2 }'
 
 
 #

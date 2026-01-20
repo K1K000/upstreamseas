@@ -9,23 +9,22 @@ pub struct BorrowResponse {
     pub book_id: i32,
     pub student_id: i32,
     pub date: NaiveDate,
+    pub end: Option<NaiveDate>,
     pub limit: NaiveDate,
-    pub active: bool
 }
 
 #[derive(Deserialize)]
 pub struct BorrowCreate {
     pub book_id: i32,
     pub student_id: i32,
-    pub borrow_lenght: u64,
 }
 
 #[derive(Deserialize)]
-pub struct BorrowChange {
+pub struct BorrowUpdate {
     pub book_id: i32,
     pub student_id: i32,
     pub extension: u64,
-    pub active: bool
+    pub active: bool,
 }
 
 pub fn to_dto(borrow: &borrow::Model) -> BorrowResponse {
@@ -34,7 +33,7 @@ pub fn to_dto(borrow: &borrow::Model) -> BorrowResponse {
         book_id: borrow.book_id,
         student_id: borrow.student_id,
         date: borrow.date,
+        end: borrow.end,
         limit: borrow.limit,
-        active: borrow.active,
     }
 }

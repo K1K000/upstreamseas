@@ -23,6 +23,7 @@ pub async fn put(
                 available: Set(data.available),
                 all_available: Set(data.all_available),
                 release: Set(data.release),
+                max_borrow: Set(data.max_borrow),
                 deleted: Set(data.deleted),
             };
             Book::update(model).exec(db).await?;

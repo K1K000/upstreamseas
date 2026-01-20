@@ -5,13 +5,13 @@ use sea_orm::{ActiveValue::Set, DatabaseConnection, EntityTrait};
 use crate::{
     entities::{borrow, prelude::Borrow},
     error_handling::ErrorResponder,
-    routes::borrow::dto::BorrowChange,
+    routes::borrow::dto::BorrowUpdate,
 };
 
 #[put("/<id>", data = "<change>", format = "json")]
 pub async fn put(
     id: i32,
-    change: Json<BorrowChange>,
+    change: Json<BorrowUpdate>,
     db: &State<DatabaseConnection>,
 ) -> Result<Status, ErrorResponder> {
     let db = db.inner();
@@ -22,11 +22,11 @@ pub async fn put(
                 book_id: Set(change.book_id),
                 student_id: Set(change.student_id),
                 date: Set(val.date),
+                end: Set(None),
                 limit: Set(val
                     .limit
                     .checked_add_days(Days::new(change.extension))
                     .unwrap_or(val.limit)),
-                active: Set(change.active),
             };
             Borrow::update(model).exec(db).await?;
             Ok(Status::NoContent)

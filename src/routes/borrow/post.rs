@@ -16,7 +16,7 @@ pub async fn single(
     db: &State<DatabaseConnection>,
     data: Json<BorrowCreate>,
 ) -> Result<Created<Json<BorrowResponse>>, ErrorResponder> {
-    book_handling(data.book_id, db, Flow::Borrow).await?;
+    let book = book_handling(data.book_id, db, Flow::Borrow).await?;
 
     student_verification(data.student_id, db).await?;
 
@@ -24,12 +24,11 @@ pub async fn single(
     let borrow = borrow::ActiveModel::builder()
         .set_book_id(data.book_id)
         .set_student_id(data.student_id)
-        .set_active(true)
         .set_date(Utc::now().date_naive())
         .set_limit(
             Utc::now()
                 .date_naive()
-                .checked_add_days(Days::new(data.borrow_lenght))
+                .checked_add_days(Days::new(book.max_borrow as u64))
                 .unwrap_or(Utc::now().date_naive()),
         )
         .insert(db)
@@ -40,7 +39,7 @@ pub async fn single(
         book_id: borrow.book_id,
         student_id: borrow.student_id,
         date: borrow.date,
+        end: borrow.end,
         limit: borrow.limit,
-        active: borrow.active,
     })))
 }

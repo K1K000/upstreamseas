@@ -51,7 +51,7 @@ pub async fn student_books(
         (Book::find()
             .right_join(Borrow)
             .filter(borrow::Column::StudentId.eq(student_id))
-            .filter(borrow::Column::Active.eq(true))
+            .filter(borrow::Column::End.is_null())
             .all(db)
             .await?)
             .iter()

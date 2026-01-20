@@ -11,17 +11,18 @@ pub struct BookResponse {
     pub available: u32,
     pub all_available: u32,
     pub release: NaiveDate,
+    pub max_borrow: u32,
     pub deleted: bool,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct BookUpdate {
-    pub id: i32,
     pub name: String,
     pub description: String,
     pub available: u32,
     pub all_available: u32,
     pub release: NaiveDate,
+    pub max_borrow: u32,
     pub deleted: bool,
 }
 
@@ -31,6 +32,7 @@ pub struct BookCreate {
     pub all_available: u32,
     pub description: String,
     pub release: NaiveDate,
+    pub max_borrow: u32,
 }
 
 pub fn book_to_dto(book: &book::Model) -> BookResponse {
@@ -41,6 +43,7 @@ pub fn book_to_dto(book: &book::Model) -> BookResponse {
         available: book.available,
         all_available: book.all_available,
         release: book.release,
+        max_borrow: book.max_borrow,
         deleted: book.deleted,
     }
 }
