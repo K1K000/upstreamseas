@@ -7,16 +7,6 @@ use crate::{entities::prelude::*, error_handling::ErrorResponder};
 use rocket::{State, get, serde::json::Json};
 use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter, QuerySelect};
 
-// #[get("/")]
-// pub async fn all(
-//     db: &State<DatabaseConnection>,
-// ) -> Result<Json<Vec<AuthorResponse>>, ErrorResponder> {
-//     let db = db.inner();
-//     Ok(Json(
-//         Author::find().all(db).await?.iter().map(to_dto).collect(),
-//     ))
-// }
-
 #[get("/id/<id>")]
 pub async fn id(
     db: &State<DatabaseConnection>,

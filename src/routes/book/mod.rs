@@ -16,7 +16,6 @@ impl Mounter for BookMounter {
         r.mount(
             "/book",
             routes![
-                get::all,
                 post::single,
                 delete::by_id,
                 put::put,
@@ -24,7 +23,8 @@ impl Mounter for BookMounter {
                 filter::top,
                 get::limit,
                 get::id,
-                get::book_categories
+                get::book_categories,
+                get::book_borrows
             ],
         )
     }

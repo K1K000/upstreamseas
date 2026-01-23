@@ -16,6 +16,8 @@ impl Mounter for StudentMounter {
             "/student",
             routes![
                 get::all,
+                get::id,
+                get::top,
                 post::single,
                 delete::by_id,
                 put::put,

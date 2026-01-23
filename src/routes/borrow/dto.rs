@@ -23,8 +23,8 @@ pub struct BorrowCreate {
 pub struct BorrowUpdate {
     pub book_id: i32,
     pub student_id: i32,
-    pub extension: u64,
-    pub active: bool,
+    pub end: Option<NaiveDate>,
+    pub limit: Option<NaiveDate>,
 }
 
 pub fn to_dto(borrow: &borrow::Model) -> BorrowResponse {

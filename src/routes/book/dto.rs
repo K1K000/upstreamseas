@@ -1,7 +1,6 @@
+use crate::entities::{author, book};
 use chrono::NaiveDate;
 use serde::{Deserialize, Serialize};
-
-use crate::entities::book;
 
 #[derive(Serialize, Debug)]
 pub struct BookResponse {
@@ -46,4 +45,33 @@ pub fn book_to_dto(book: &book::Model) -> BookResponse {
         max_borrow: book.max_borrow,
         deleted: book.deleted,
     }
+}
+
+#[derive(Debug, Serialize)]
+pub struct MiniAuthor {
+    pub id: i32,
+    pub name: String,
+}
+
+#[derive(Debug, Serialize)]
+pub struct BookAuthStat {
+    pub id: i32,
+    pub name: String,
+    pub description: String,
+    pub available: u32,
+    pub all_available: u32,
+    pub release: NaiveDate,
+    pub max_borrow: u32,
+    pub deleted: bool,
+    pub authors: Vec<MiniAuthor>,
+}
+
+pub fn author_to_mini<I>(authors: I) -> impl Iterator<Item = MiniAuthor>
+where
+    I: Iterator<Item = author::Model>,
+{
+    authors.map(|a| MiniAuthor {
+        id: a.id,
+        name: a.name,
+    })
 }

@@ -2,12 +2,9 @@ use rocket::{State, post, response::status::Created, serde::json::Json};
 use sea_orm::DatabaseConnection;
 
 use crate::{
-    entities::{book, category},
+    entities::category,
     error_handling::ErrorResponder,
-    routes::{
-        book::dto::{BookCreate, BookResponse},
-        category::dto::{CategoryCreate, CategoryResponse},
-    },
+    routes::category::dto::{CategoryCreate, CategoryResponse},
 };
 
 #[post("/", format = "json", data = "<data>")]
@@ -24,5 +21,6 @@ pub async fn single(
     Ok(Created::new("/category").body(Json(CategoryResponse {
         id: category.id,
         name: category.name,
+        active: category.active,
     })))
 }

@@ -7,6 +7,7 @@ pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i32,
     pub name: String,
+    pub active: bool,
     #[sea_orm(has_many, via = "book_category")]
     pub books: Vec<super::book::Entity>,
     #[sea_orm(has_many)]

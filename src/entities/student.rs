@@ -9,7 +9,9 @@ pub struct Model {
     pub name: String,
     pub email: String,
     #[sea_orm(has_many, via = "borrow")]
-    pub books: Vec<super::student::Entity>,
+    pub books: Vec<super::book::Entity>,
+    #[sea_orm(has_many)]
+    pub borrow: Vec<super::borrow::Entity>,
     #[sea_orm(has_one)]
     pub ticket: HasOne<super::ticket::Entity>,
 }

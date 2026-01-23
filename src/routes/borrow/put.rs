@@ -22,11 +22,14 @@ pub async fn put(
                 book_id: Set(change.book_id),
                 student_id: Set(change.student_id),
                 date: Set(val.date),
-                end: Set(None),
-                limit: Set(val
-                    .limit
-                    .checked_add_days(Days::new(change.extension))
-                    .unwrap_or(val.limit)),
+                end: Set(match change.end {
+                    Some(val) => Some(val),
+                    None => val.end,
+                }),
+                limit: Set(match change.limit {
+                    Some(val) => val,
+                    None => val.limit,
+                }),
             };
             Borrow::update(model).exec(db).await?;
             Ok(Status::NoContent)

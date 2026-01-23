@@ -14,7 +14,14 @@ impl Mounter for CategoryMounter {
     fn mount(r: Rocket<Build>) -> Rocket<Build> {
         r.mount(
             "/category",
-            routes![get::all, post::single, delete::by_id, put::put,],
+            routes![
+                get::all,
+                post::single,
+                delete::by_id,
+                put::put,
+                get::by_id,
+                get::category_books
+            ],
         )
     }
 }
